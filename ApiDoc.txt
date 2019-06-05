@@ -1,0 +1,127 @@
+github url 
+https://github.com/pawanpatil08/Ticketing-Tool
+
+Nodeman : nodemon ./server.js localhost 8080
+
+To Run Application
+
+    npm install
+    run code using nodemon ./server.js localhost 8080
+------------------------------------------------------------------------
+
+Login API 
+Url :
+localhost:3000/users/login :
+Method Type : post
+Body :
+{
+	"email":"pwnpatil08@gmail.com",
+	"password":"pawan@123"
+}
+response :
+{
+        "u_id": 2,
+        "u_name": "pawan",
+        "u_mobile": "9595114164",
+        "u_altermobile": "7972548936",
+        "u_email": "pwnpatil08@gmail.com",
+        "u_address": "Pune",
+        "u_MachinePurchased": "Lenovo k4",
+        "u_dateOf_Purchased": "30 Dec 2018",
+        "u_role": 1,
+        "u_roleType": "admin",
+        "u_joinDate": "0000-00-00 00:00:00"
+}
+------------------------------------------------------------------------------
+localhost:3000/users/createUser :
+Method Type : post
+Body :
+{
+    "u_name": "pawan",
+    "u_mobile": "9595114164",
+    "u_altermobile": "7972548936",
+    "u_email": "pwnpatil08@gmail.com",
+    "u_address": "Pune",
+    "u_MachinePurchased": "Lenovo k4",
+    "u_dateOf_Purchased": "30 Dec 2018",
+    "u_password": "pawan@123",
+    "u_cpassword": "pawan@123",
+    "u_role": 1,
+    "u_roleType": 1,
+    "u_joinDate": "0000-00-00 00:00:00"
+}
+response :
+{
+    "fieldCount": 0,
+    "affectedRows": 1,
+    "insertId": 6,
+    "serverStatus": 2,
+    "warningCount": 0,
+    "message": "",
+    "protocol41": true,
+    "changedRows": 0
+}
+------------------------------------------------------------------------------
+localhost:3000/complaint/newComplaint :
+Method Type : post
+Body :
+{
+	 "c_desc":"Desc 1",
+    "c_photo":"",
+    "c_status":1,
+    "c_assignTo":2,
+    "c_assignBy":8
+}   
+getting constraint error for c_status column please confirm 
+response :
+{
+    "fieldCount": 0,
+    "affectedRows": 1,
+    "insertId": 2,
+    "serverStatus": 2,
+    "warningCount": 0,
+    "message": "",
+    "protocol41": true,
+    "changedRows": 0
+}
+------------------------------------------------------------------------------
+localhost:3000/complaint/gelAllcomplaint  
+Method Type : get
+
+response :
+{
+    "statusCode": 200,
+    "success": "status",
+    "data": [
+        {
+            "c_id": 2,
+            "c_desc": "Desc 1",
+            "c_photo": "",
+            "c_status": null,
+            "c_assignTo": 2,
+            "c_assignBy": 8
+        }
+    ]
+}
+
+Status is not added in query for now Select * from complaint
+
+------------------------------------------------------------------------------
+localhost:3000/complaint/getComplaint/2
+Method : get
+response :
+{
+    "statusCode": 200,
+    "status": "success",
+    "data": [
+        {
+            "c_id": 2,
+            "c_desc": "Desc 1",
+            "c_photo": "",
+            "c_status": null,
+            "c_assignTo": 2,
+            "c_assignBy": 8
+        }
+    ]
+}
+------------------------------------------------------------------------------
