@@ -44,7 +44,7 @@ router.get('/getComplaint/:id', function(req, res, next) {
 
 //openomplaint and assing to me
 router.post('/openComplaint', function (req, res, next) {
-  connection.query("SELECT * FROM service_portal.complaint where complaint.c_status=? and complaint.c_assignTo=?", [req.body.status, req.body.assignTo], function (err, result, fields) {
+  connection.query("SELECT * FROM complaint where complaint.c_status=? and complaint.c_assignTo=?", [req.body.status, req.body.assignTo], function (err, result, fields) {
     if (err) res.send(err);
     res.send({ statusCode: res.statusCode, status: "success", data: result });
   });
@@ -53,7 +53,7 @@ router.post('/openComplaint', function (req, res, next) {
 
 //openomplaint and assing to me
 router.post('/closedByComplaint', function (req, res, next) {
-  connection.query("SELECT * FROM service_portal.complaint where complaint.c_closedBy=?", [req.body.closedBy], function (err, result, fields) {
+  connection.query("SELECT * FROM complaint where complaint.c_closedBy=?", [req.body.closedBy], function (err, result, fields) {
     if (err) res.send(err);
     res.send({ statusCode: res.statusCode, status: "success", data: result });
   });
@@ -61,7 +61,7 @@ router.post('/closedByComplaint', function (req, res, next) {
 
 //update status
 router.post('/updateComplaint', function (req, res, next) {
-  connection.query("UPDATE `service_portal`.`complaint` SET `c_status` = ? WHERE (`c_id` = ?)", [req.body.status,req.body.complaintId], function (err, result, fields) {
+  connection.query("UPDATE `complaint` SET `c_status` = ? WHERE (`c_id` = ?)", [req.body.status,req.body.complaintId], function (err, result, fields) {
     if (err) res.send(err);
     res.send({ statusCode: res.statusCode, status: "success", data: result });
   });

@@ -13,7 +13,7 @@ con.connect((err)=>{
   if(err) throw err;
   console.log("Connected");
 })
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Express1' });
 });
 
 
