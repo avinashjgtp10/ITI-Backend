@@ -19,7 +19,7 @@ router.post('/login', function (req, res, next) {
         }else{
           delete result[0].u_password;
           delete result[0].u_cpassword;    
-          res.send({ statusCode: res.statusCode, status: "succss", data: result[0] });
+          res.send({ statusCode: res.statusCode, status: "success", data: result[0] });
         }    
   });
 });
