@@ -6,7 +6,6 @@ var mysql = require('mysql');
 var config = require('./config/config');
 var connection = mysql.createConnection(config.databaseOptions);
 
-
 router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
@@ -15,10 +14,13 @@ router.get('/', function (req, res, next) {
 router.post('/login', function (req, res, next) {
   console.log('connection is created for login');
   connection.query("SELECT * FROM user  WHERE u_email = ? AND u_password=?", [req.body.email, req.body.password], function (err, result, fields) {
-    if (err) res.send(err);
-    delete result[0].u_password;
-    delete result[0].u_cpassword;
-    res.send({ statusCode: res.statusCode, status: "success", data: result[0] });
+        if(result.length === 0){
+          res.send({ statusCode: res.statusCode, status: "error"});    
+        }else{
+          delete result[0].u_password;
+          delete result[0].u_cpassword;    
+          res.send({ statusCode: res.statusCode, status: "succss", data: result[0] });
+        }    
   });
 });
 
