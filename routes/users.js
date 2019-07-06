@@ -3,6 +3,8 @@ var router = express.Router();
 var mysql = require('mysql');
 const cors=require('cors');
 
+
+
 var config = require('./config/config');
 var connection = mysql.createConnection(config.databaseOptions);
 
@@ -12,7 +14,9 @@ router.get('/', function (req, res, next) {
 
 // Login API
 router.post('/login',cors(), function (req, res, next) {
+
   res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   console.log('connection is created for login');
   connection.query("SELECT * FROM user  WHERE u_email = ? AND u_password=?", [req.body.email, req.body.password], function (err, result, fields) {
