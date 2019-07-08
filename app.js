@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const bodyParser = require('body-parser')
+var mysql = require('mysql');
+var config = require('./routes/config/config');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -38,10 +40,33 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
+
+var connection ;
+function handleDisconnect() {
+  console.log("It alway run")
+  connection = mysql.createConnection(config.databaseOptions); // Recreate the connection, since
+  connection.connect(function(err) {              // The server is either down
+    if(err) {                                     // or restarting (takes a while sometimes).
+      console.log('error when connecting to db:', err);
+      setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
+    }                                     // to avoid a hot loop, and to allow our node script to
+  });                                     // process asynchronous requests in the meantime.
+  connection.on('error', function(err) {
+    console.log('db error', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
+      handleDisconnect();                        
+    } else {                                
+      throw err;        
+      handleDisconnect();
+    }
+  });
+}
+
+handleDisconnect();
+
 
 module.exports = app;

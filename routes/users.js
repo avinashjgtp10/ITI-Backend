@@ -3,8 +3,6 @@ var router = express.Router();
 var mysql = require('mysql');
 const cors=require('cors');
 
-
-
 var config = require('./config/config');
 var connection = mysql.createConnection(config.databaseOptions);
 
@@ -14,18 +12,30 @@ router.get('/', function (req, res, next) {
 
 // Login API
 router.post('/login',cors(), function (req, res, next) {
-
   res.header("Access-Control-Allow-Origin", "*");
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   console.log('connection is created for login');
   connection.query("SELECT * FROM user  WHERE u_email = ? AND u_password=?", [req.body.email, req.body.password], function (err, result, fields) {
-        if(result.length === 0){
+      
+    if(result.length === 0 || err){
+      console.log(err);
           res.send({ statusCode: res.statusCode, status: "error"});    
         }else{
           delete result[0].u_password;
           delete result[0].u_cpassword;    
           res.send({ statusCode: res.statusCode, status: "success", data: result[0] });
+        }    
+  });
+});
+
+//Get Status
+router.get('/getStatus',cors(),function(req,res,next){
+  connection.query("SELECT * FROM status", [req.body.email, req.body.password], function (err, result, fields) {
+    if(result.length === 0 || err){
+          res.send({ statusCode: res.statusCode, status: "error"});    
+        }else{
+          res.send({ statusCode: res.statusCode, status: "success", data: result });
         }    
   });
 });

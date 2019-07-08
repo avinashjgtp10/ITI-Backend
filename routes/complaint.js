@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
-
+const cors=require('cors');
 
 var config = require('./config/config');
 var connection = mysql.createConnection(config.databaseOptions);
@@ -17,18 +17,18 @@ router.post('/newComplaint', function(req, res, next) {
   }
   connection.query('INSERT INTO complaint SET ?', userObject, function (err, result, fields) {
      if (err) res.send(err);
-
      res.send({ statusCode: res.statusCode, status: "success", data: result });
    });
 });
 
 // register new Complaint
-router.get('/gelAllcomplaint', function(req, res, next) {
-   console.log('connection is created for gelAllcomplaint');
+router.get('/gelAllcomplaint',cors(), function(req, res, next) {
  connection.query('Select * from complaint', function (err, result, fields) {
-    if (err) res.send(err);
-    res.send({ statusCode: res.statusCode, status: "success", data: result });
-   //res.send(result)
+   if(result.length === 0 || err){
+        res.send({ statusCode: res.statusCode, status: "error"});    
+      }else{    
+        res.send({ statusCode: res.statusCode, status: "success", data: result });
+      }
   });
 });
 
