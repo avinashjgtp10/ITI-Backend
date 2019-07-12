@@ -72,7 +72,7 @@ app.use(function(err, req, res, next) {
 var connection ;
 try {
     function handleDisconnect() {
-        console.log("It alway run")
+        console.log("It always run")
         connection = mysql.createConnection(config.databaseOptions); // Recreate the connection, since
         connection.connect(function(err) {              // The server is either down
             if(err) {                                     // or restarting (takes a while sometimes).
