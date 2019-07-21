@@ -4,7 +4,8 @@ var mysql = require('mysql');
 const cors = require('cors');
 
 var config = require('./config/config');
-var connection = mysql.createConnection(config.databaseOptions);
+// var connection = mysql.createConnection(config.databaseOptions);
+let connection=config.databaseOptions;
 
 router.get('/', function (req, res, next) {
   res.send('respond with a resource');
@@ -26,18 +27,15 @@ router.post('/login', cors(), function (req, res, next) {
       delete result[0].u_cpassword;
       res.send({ statusCode: res.statusCode, status: "success", data: result[0] });
     }
+  
   });
 });
 
 //Get all user info
 router.post('/getAll', cors(), function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  console.log('connection is created for login');
   connection.query("SELECT * FROM user  WHERE u_id = ?", [req.body.u_id], function (err, result, fields) {
 
-    if (result.length === 0 || err) {
+    if (!result || err) {
       console.log(err);
       res.send({ statusCode: res.statusCode, status: "error" });
     } else {
@@ -46,19 +44,19 @@ router.post('/getAll', cors(), function (req, res, next) {
       res.send({ statusCode: res.statusCode, status: "success", data: result[0] });
     }
   });
-  connection.end()
+
 });
 
 //Get Status
 router.get('/getStatus', cors(), function (req, res, next) {
   connection.query("SELECT * FROM status", [req.body.email, req.body.password], function (err, result, fields) {
-    if (result.length === 0 || err) {
+    if (!result || err) {
       res.send({ statusCode: res.statusCode, status: "error" });
     } else {
       res.send({ statusCode: res.statusCode, status: "success", data: result });
     }
   });
-  connection.end()
+
 });
 
 
@@ -85,7 +83,7 @@ router.post('/createUser', function (req, res, next) {
     res.send(result)
 
   });
-  connection.end()
+
 });
 
 

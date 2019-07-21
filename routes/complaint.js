@@ -4,7 +4,8 @@ var mysql = require('mysql');
 const cors = require('cors');
 
 var config = require('./config/config');
-var connection = mysql.createConnection(config.databaseOptions);
+// var connection = mysql.createConnection(config.databaseOptions);
+let connection=config.databaseOptions;
 // register new Complaint
 router.post('/newComplaint', function (req, res, next) {
   console.log('connection is created for registerComplaint');
@@ -23,14 +24,15 @@ router.post('/newComplaint', function (req, res, next) {
 
 // register new Complaint
 router.get('/gelAllcomplaint', cors(), function (req, res, next) {
+  console.log("Need to handle this");
   connection.query('SELECT * FROM complaint', function (err, result, fields) {
-   
+    
     if (!result || err) {
-      console.log(JSON.stringify(result));
       res.send({ statusCode: res.statusCode, status: "error" });
     } else {
       res.send({ statusCode: res.statusCode, status: "success", data: result });
     }
+
 
   });
 });
