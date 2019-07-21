@@ -7,10 +7,11 @@ var config=require('./config/config');
 var con= config.databaseOptions;
 /* GET home page. */
 router.get('/', function(req, res, next) {
-con.connect((err)=>{
+con.getConnection((err)=>{
   if(err) throw err;
   console.log("Connected");
 })
+
   res.render('index', { title: 'new Express1' });
 });
 module.exports = router;
