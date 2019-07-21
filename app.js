@@ -71,42 +71,37 @@ app.use(function (err, req, res, next) {
 
 var connection;
 try {
-    //     function handleDisconnect() {
-    //         connection = mysql.createConnection(config.databaseOptions);
-    //         // Recreate the connection, since
-    //         connection.connect(function (err) {              // The server is either down
-    //             if (err) {                                     // or restarting (takes a while sometimes).
-    //                 console.log('error when connecting to db:', err);
-    //                 setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
-    //             }                                     // to avoid a hot loop, and to allow our node script to
-    //         });                                     // process asynchronous requests in the meantime.
-    //         connection.on('error', function (err) {
-    //             console.log('db error', err);
-    //             if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-    //                 handleDisconnect();
-    //             } else {
-    //                 throw err;
-    //                 handleDisconnect();
-    //             }
-    //         });
-    //     }
+    function handleDisconnect() {
+        console.log("handleDisconnect");
+        connection = mysql.createConnection(config.databaseOptions);
+        // console.log(connection);
+        // Recreate the connection, since
+        connection.connect(function (err) {              // The server is either down
+            if (err) {                                     // or restarting (takes a while sometimes).
+                console.log('error when connecting to db:', err);
+                setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
+            }                                     // to avoid a hot loop, and to allow our node script to
+        });    
+                            // process asynchronous requests in the meantime.
+        connection.on('error', function (err) {
+            console.log('db error', err);
+            if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+                handleDisconnect();
+            } else {
+                mysql.createConnection(config.databaseOptions);
+                throw err;
 
-    //     handleDisconnect();
-
-    const pool = mysql.createPool(config.databaseOptions);
-
-    setInterval(() => {
-        pool.query('SELECT 1', (err, rows) => {
-            console.log("My error", err)
-            if (err) throw err;
+            }
         });
-    }, 1000);
+        connection.destroy();
+    }
 
+    handleDisconnect();
 }
 catch (err) {
     console.log("error in sql connection");
 }
-
+ handleDisconnect();
 
 
 module.exports = app;
