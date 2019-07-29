@@ -59,27 +59,34 @@ router.get('/getStatus', cors(), function (req, res, next) {
 
 });
 
+//Get All Customer
+router.get('/getAllCustomer', cors(), function (req, res, next) {
+  let sql = "select * from user ";
+  connection.query(sql, function (err, result, fields) {
+    if (!result || err) {
+      console.log(err);
+      console.log(result)
+      res.send({ statusCode: res.statusCode, status: "error" + err });
+    } else {
+      res.send({ statusCode: res.statusCode, status: "success", data: result });
+    }
+
+  });
+});
 
 //// create New User  
 router.post('/createUser', cors(), function (req, res, next) {
-
-  console.log('connection is created for createUser',JSON.stringify(req.body.u_name));
-  
-
   var userObject = [[req.body.u_name, req.body.u_mobile, req.body.u_altermobile, req.body.u_email, req.body.u_address, req.body.u_MachinePurchased, req.body.u_dateOf_Purchased, req.body.u_password, req.body.u_cpassword,
   req.body.u_role,
   req.body.u_roleType,
   req.body.u_joinDate]
   ]
-  // res.send({ name:userObject });  
-  console.log(userObject);
-
   let sql = "INSERT INTO user (u_name, u_mobile, u_altermobile, u_email, u_address, u_MachinePurchased, u_dateOf_Purchased, u_password, u_cpassword, u_role, u_roleType,u_joinDate) VALUES ?";
   connection.query(sql, [userObject], function (err, result, fields) {
     if (!result || err) {
       console.log(err);
       console.log(result)
-      res.send({ statusCode: res.statusCode, status: "error"+err });
+      res.send({ statusCode: res.statusCode, status: "error" + err });
     } else {
       console.log(result)
       res.send({ statusCode: res.statusCode, status: "success" });
