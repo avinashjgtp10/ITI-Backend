@@ -18,8 +18,8 @@ router.post('/login', cors(), function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   console.log('connection is created for login');
   connection.query("SELECT * FROM user  WHERE u_email = ? AND u_password=?", [req.body.email, req.body.password], function (err, result, fields) {
-
-    if (!result || err) {
+console.log(result.length);
+    if (result.length === 0 || err) {
       console.log(err);
       res.send({ statusCode: res.statusCode, status: "error" });
     } else {
@@ -34,8 +34,7 @@ router.post('/login', cors(), function (req, res, next) {
 //Get all user info
 router.post('/getAll', cors(), function (req, res, next) {
   connection.query("SELECT * FROM user  WHERE u_id = ?", [req.body.u_id], function (err, result, fields) {
-
-    if (!result || err) {
+    if (result.length === 0  || err) {
       console.log(err);
       res.send({ statusCode: res.statusCode, status: "error" });
     } else {
@@ -50,7 +49,7 @@ router.post('/getAll', cors(), function (req, res, next) {
 //Get Status
 router.get('/getStatus', cors(), function (req, res, next) {
   connection.query("SELECT * FROM status", [req.body.email, req.body.password], function (err, result, fields) {
-    if (!result || err) {
+    if (result.length === 0  || err) {
       res.send({ statusCode: res.statusCode, status: "error" });
     } else {
       res.send({ statusCode: res.statusCode, status: "success", data: result });
@@ -63,7 +62,7 @@ router.get('/getStatus', cors(), function (req, res, next) {
 router.get('/getAllCustomer', cors(), function (req, res, next) {
   let sql = "select * from user ";
   connection.query(sql, function (err, result, fields) {
-    if (!result || err) {
+    if (result.length === 0  || err) {
       console.log(err);
       console.log(result)
       res.send({ statusCode: res.statusCode, status: "error" + err });
@@ -83,7 +82,7 @@ router.post('/createUser', cors(), function (req, res, next) {
   ]
   let sql = "INSERT INTO user (u_name, u_mobile, u_altermobile, u_email, u_address, u_MachinePurchased, u_dateOf_Purchased, u_password, u_cpassword, u_role, u_roleType,u_joinDate) VALUES ?";
   connection.query(sql, [userObject], function (err, result, fields) {
-    if (!result || err) {
+    if (result.length === 0  || err) {
       console.log(err);
       console.log(result)
       res.send({ statusCode: res.statusCode, status: "error" + err });
