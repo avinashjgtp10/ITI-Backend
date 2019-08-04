@@ -24,8 +24,21 @@ router.post('/newComplaint', function (req, res, next) {
 
 // register new Complaint
 router.get('/gelAllcomplaint', cors(), function (req, res, next) {
-  console.log("Need to handle this");
   connection.query('SELECT * FROM complaint', function (err, result, fields) {
+    
+    if (result.length === 0  || err) {
+      res.send({ statusCode: res.statusCode, status: "error" });
+    } else {
+      res.send({ statusCode: res.statusCode, status: "success", data: result });
+    }
+
+  });
+});
+
+// register new Complaint
+router.get('/getMachineType', cors(), function (req, res, next) {
+  
+  connection.query('SELECT * FROM type_of_machine', function (err, result, fields) {
     
     if (result.length === 0  || err) {
       res.send({ statusCode: res.statusCode, status: "error" });
@@ -36,6 +49,8 @@ router.get('/gelAllcomplaint', cors(), function (req, res, next) {
 
   });
 });
+
+
 
 //getComplaint Info
 router.get('/getComplaint/:id', function (req, res, next) {
@@ -74,8 +89,23 @@ router.post('/updateComplaint', function (req, res, next) {
       console.log(err);
       res.send({ statusCode: res.statusCode, status: "error" });
     } else {
-      delete result[0].u_password;
-      delete result[0].u_cpassword;
+
+      res.send({ statusCode: res.statusCode, status: "success", data: result[0] });
+    }
+  });
+
+});
+
+//Assign Complaint
+router.post('/assignComplaint', function (req, res, next) {
+  console.log([req.body.status, req.body.assignTo, req.body.complaintId]);
+  connection.query("UPDATE `complaint` SET `c_status` = ? ,`c_assignTo` = ? WHERE (`c_id` = ?)", [req.body.status, req.body.assignTo, req.body.complaintId], function (err, result, fields) {
+    console.log(result);
+    if (result.length === 0  || err) {
+      console.log(err);
+      res.send({ statusCode: res.statusCode, status: "error" });
+    } else {
+
       res.send({ statusCode: res.statusCode, status: "success", data: result[0] });
     }
   });

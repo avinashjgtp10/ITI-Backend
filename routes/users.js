@@ -63,8 +63,7 @@ router.get('/getAllCustomer', cors(), function (req, res, next) {
   let sql = "select * from user ";
   connection.query(sql, function (err, result, fields) {
     if (result.length === 0  || err) {
-      console.log(err);
-      console.log(result)
+      
       res.send({ statusCode: res.statusCode, status: "error" + err });
     } else {
       res.send({ statusCode: res.statusCode, status: "success", data: result });
