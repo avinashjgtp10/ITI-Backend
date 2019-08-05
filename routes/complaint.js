@@ -7,20 +7,25 @@ var config = require('./config/config');
 // var connection = mysql.createConnection(config.databaseOptions);
 let connection=config.databaseOptions;
 // register new Complaint
-router.post('/newComplaint', function (req, res, next) {
-  console.log('connection is created for registerComplaint');
-  var userObject = {
-    "c_desc": req.body.c_desc,
-    "c_photo": req.body.c_photo,
-    "c_status": req.body.c_status,
-    "c_assignTo": req.body.c_assignTo,
-    "c_assignBy": req.body.c_assignBy,
-  }
-  connection.query('INSERT INTO complaint SET ?', userObject, function (err, result, fields) {
-    if (err) res.send(err);
-    res.send({ statusCode: res.statusCode, status: "success", data: result });
+router.post('/newComplaint', cors(), function (req, res, next) {
+  var userObject = [[req.body.c_desc, req.body.c_assignBy, req.body.machine_type, req.body.c_date,req.body.c_status]
+  ]
+  console.log(JSON.stringify(userObject));
+  let sql = "INSERT INTO complaint (c_desc, c_assignBy, Machine_type, c_date, c_status) VALUES ?";
+  connection.query(sql, [userObject], function (err, result, fields) {
+    if (result.length === 0  || err) {
+      console.log(err);
+      console.log(result)
+      res.send({ statusCode: res.statusCode, status: "error" + err });
+    } else {
+      console.log(result)
+      res.send({ statusCode: res.statusCode, status: "success" });
+    }
+
   });
+
 });
+
 
 // register new Complaint
 router.get('/gelAllcomplaint', cors(), function (req, res, next) {
