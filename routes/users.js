@@ -104,7 +104,7 @@ router.post('/createUser', cors(), function (req, res, next) {
         }
       });
     } else {
-      res.send({ statusCode: res.statusCode, status: "Error", message: "The email address or phone number you have entered is already registered!" });
+      res.send({ statusCode: res.statusCode, status: "error", message: "The email address or phone number you have entered is already registered!" });
     }
   })
 });
