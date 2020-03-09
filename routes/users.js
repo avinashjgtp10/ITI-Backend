@@ -18,7 +18,7 @@ router.post('/login', cors(), function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   console.log('connection is created for login');
   connection.query("SELECT * FROM user  WHERE u_email = ? AND u_password=?", [req.body.email, req.body.password], function (err, result, fields) {
-console.log(result.length);
+    console.log(result.length);
     if (result.length === 0 || err) {
       console.log(err);
       res.send({ statusCode: res.statusCode, status: "error" });
@@ -34,7 +34,7 @@ console.log(result.length);
 //Get all user info
 router.post('/getAll', cors(), function (req, res, next) {
   connection.query("SELECT * FROM user  WHERE u_id = ?", [req.body.u_id], function (err, result, fields) {
-    if (result.length === 0  || err) {
+    if (result.length === 0 || err) {
       console.log(err);
       res.send({ statusCode: res.statusCode, status: "error" });
     } else {
@@ -49,7 +49,7 @@ router.post('/getAll', cors(), function (req, res, next) {
 //Get Status
 router.get('/getStatus', cors(), function (req, res, next) {
   connection.query("SELECT * FROM status", [req.body.email, req.body.password], function (err, result, fields) {
-    if (result.length === 0  || err) {
+    if (result.length === 0 || err) {
       res.send({ statusCode: res.statusCode, status: "error" });
     } else {
       res.send({ statusCode: res.statusCode, status: "success", data: result });
@@ -61,7 +61,7 @@ router.get('/getStatus', cors(), function (req, res, next) {
 //Get user data
 router.get('/getAnalysisData', cors(), function (req, res, next) {
   connection.query("SELECT * FROM user", [req.body.email, req.body.password], function (err, result, fields) {
-    if (result.length === 0  || err) {
+    if (result.length === 0 || err) {
       res.send({ statusCode: res.statusCode, status: "error" });
     } else {
       res.send({ statusCode: res.statusCode, status: "success", data: result });
@@ -75,8 +75,8 @@ router.get('/getAnalysisData', cors(), function (req, res, next) {
 router.get('/getAllCustomer', cors(), function (req, res, next) {
   let sql = "select * from user ";
   connection.query(sql, function (err, result, fields) {
-    if (result.length === 0  || err) {
-      
+    if (result.length === 0 || err) {
+
       res.send({ statusCode: res.statusCode, status: "error" + err });
     } else {
       res.send({ statusCode: res.statusCode, status: "success", data: result });
@@ -92,22 +92,40 @@ router.post('/createUser', cors(), function (req, res, next) {
   req.body.u_roleType,
   req.body.u_joinDate]
   ]
-  let sql = "INSERT INTO user (u_name, u_mobile, u_altermobile, u_email, u_address, u_MachinePurchased, u_dateOf_Purchased, u_password, u_cpassword, u_role, u_roleType,u_joinDate) VALUES ?";
-  connection.query(sql, [userObject], function (err, result, fields) {
-    if (result.length === 0  || err) {
-      console.log(err);
-      console.log(result)
-      res.send({ statusCode: res.statusCode, status: "error" + err });
+  getUser(req.body.u_email, req.body.u_mobile).then((status) => {
+    if (!status) {
+      console.log(status)
+      let sql = "INSERT INTO user (u_name, u_mobile, u_altermobile, u_email, u_address, u_MachinePurchased, u_dateOf_Purchased, u_password, u_cpassword, u_role, u_roleType,u_joinDate) VALUES ?";
+      connection.query(sql, [userObject], function (err, result, fields) {
+        if (result.length === 0 || err) {
+          res.send({ statusCode: res.statusCode, status: "error" + err });
+        } else {
+          res.send({ statusCode: res.statusCode, status: "success" });
+        }
+      });
     } else {
-      console.log(result)
-      res.send({ statusCode: res.statusCode, status: "success" });
+      res.send({ statusCode: res.statusCode, status: "Error", message: "The email address or phone number you have entered is already registere!" });
     }
-
-  });
-
+  })
 });
-
-
-
+function getUser(email, mobile) {
+  return new Promise((resolve, reject) => {
+    let sql = "select * from user ";
+    connection.query(sql, function (err, result, fields) {
+      if (result) {
+        for (let i = 0; i < result.length; i++) {
+          if (result[i].u_email === email || result[i].u_mobile === mobile) {
+            console.log(true)
+            resolve(true)
+            break
+          }
+        }
+      } else {
+        resolve(false)
+      }
+      resolve(false)
+    });
+  })
+}
 
 module.exports = router;
