@@ -58,6 +58,19 @@ router.get('/getStatus', cors(), function (req, res, next) {
 
 });
 
+//Get user data
+router.get('/getAnalysisData', cors(), function (req, res, next) {
+  connection.query("SELECT * FROM user", [req.body.email, req.body.password], function (err, result, fields) {
+    if (result.length === 0  || err) {
+      res.send({ statusCode: res.statusCode, status: "error" });
+    } else {
+      res.send({ statusCode: res.statusCode, status: "success", data: result });
+    }
+  });
+
+});
+
+
 //Get All Customer
 router.get('/getAllCustomer', cors(), function (req, res, next) {
   let sql = "select * from user ";
