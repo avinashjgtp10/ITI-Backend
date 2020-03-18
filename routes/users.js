@@ -90,11 +90,10 @@ router.post('/createUser', cors(), function (req, res, next) {
   var userObject = [[req.body.u_name, req.body.u_mobile, req.body.u_altermobile, req.body.u_email, req.body.u_address, req.body.u_MachinePurchased, req.body.u_dateOf_Purchased, req.body.u_password, req.body.u_cpassword,
   req.body.u_role,
   req.body.u_roleType,
-  req.body.u_joinDate,req.u_purchase_con]
+  req.body.u_joinDate,req.body.u_purchase_con]
   ]
   getUser(req.body.u_email, req.body.u_mobile).then((status) => {
     if (!status) {
-      console.log(status)
       let sql = "INSERT INTO user (u_name, u_mobile, u_altermobile, u_email, u_address, u_MachinePurchased, u_dateOf_Purchased, u_password, u_cpassword, u_role, u_roleType,u_joinDate,u_purchase_con) VALUES ?";
       connection.query(sql, [userObject], function (err, result, fields) {
         if (result.length === 0 || err) {
