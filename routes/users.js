@@ -95,12 +95,12 @@ router.post('/createUser', cors(), function (req, res, next) {
   req.body.u_MachineNo,
   req.body.u_ServicePeriod,
   req.body.u_WarrentyPeriod
-]]
+  ]]
   getUser(req.body.u_email, req.body.u_mobile).then((status) => {
     if (!status) {
       let sql = "INSERT INTO user (u_name, u_mobile, u_altermobile, u_email, u_address, u_MachinePurchased, u_dateOf_Purchased, u_password, u_cpassword, u_role, u_roleType,u_joinDate,u_purchase_con,u_note,u_MachineNo,u_ServicePeriod,u_WarrentyPeriod) VALUES ?";
       connection.query(sql, [userObject], function (err, result, fields) {
-        if ( result === undefined  || err) {
+        if (result === undefined || err) {
           console.log(result)
           res.send({ statusCode: res.statusCode, status: "error" + err });
         } else {
@@ -114,15 +114,30 @@ router.post('/createUser', cors(), function (req, res, next) {
 });
 
 router.post('/getUserById', cors(), function (req, res, next) {
-  let sql = "SELECT * FROM user where u_id="+req.body.u_id;
-      connection.query(sql, function (err, result, fields) {
-        if ( result === undefined  || err) {
-          res.send({ statusCode: res.statusCode, status: "error" + err });
-        } else {
-          res.send({ statusCode: res.statusCode, status: "success",data:result });
-        }
-      });
+  let sql = "SELECT * FROM user where u_id=" + req.body.u_id;
+  connection.query(sql, function (err, result, fields) {
+    if (result === undefined || err) {
+      res.send({ statusCode: res.statusCode, status: "error" + err });
+    } else {
+      res.send({ statusCode: res.statusCode, status: "success", data: result });
+    }
+  });
 });
+
+router.post('/updateUserById', cors(), function (req, res, next) {
+  let sql = "UPDATE user SET u_mobile=?,u_altermobile=?,u_password =? ,u_cpassword=?,u_name=?  WHERE u_id =?"
+  connection.query(sql, [req.body.u_mobile, req.body.u_altermobile, req.body.u_password, req.body.u_cpassword, req.body.u_name, req.body.u_id], function (err, result, fields) {
+    if (result === undefined || err) {
+      res.send({ statusCode: res.statusCode, status: "error" + err });
+    } else {
+      res.send({ statusCode: res.statusCode, status: "success"});
+    }
+  });
+});
+
+
+
+
 
 
 
