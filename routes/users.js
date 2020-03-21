@@ -100,7 +100,6 @@ router.post('/createUser', cors(), function (req, res, next) {
     if (!status) {
       let sql = "INSERT INTO user (u_name, u_mobile, u_altermobile, u_email, u_address, u_MachinePurchased, u_dateOf_Purchased, u_password, u_cpassword, u_role, u_roleType,u_joinDate,u_purchase_con,u_note,u_MachineNo,u_ServicePeriod,u_WarrentyPeriod) VALUES ?";
       connection.query(sql, [userObject], function (err, result, fields) {
-        
         if ( result === undefined  || err) {
           console.log(result)
           res.send({ statusCode: res.statusCode, status: "error" + err });
@@ -113,6 +112,22 @@ router.post('/createUser', cors(), function (req, res, next) {
     }
   })
 });
+
+router.post('/getUserById', cors(), function (req, res, next) {
+  let sql = "SELECT * FROM user where u_id="+req.body.u_id;
+      connection.query(sql, function (err, result, fields) {
+        if ( result === undefined  || err) {
+          res.send({ statusCode: res.statusCode, status: "error" + err });
+        } else {
+          res.send({ statusCode: res.statusCode, status: "success",data:result });
+        }
+      });
+});
+
+
+
+
+
 function getUser(email, mobile) {
   return new Promise((resolve, reject) => {
     let sql = "select * from user ";
