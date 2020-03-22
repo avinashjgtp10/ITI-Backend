@@ -124,6 +124,7 @@ router.post('/getUserById', cors(), function (req, res, next) {
   });
 });
 
+//Update User
 router.post('/updateUserById', cors(), function (req, res, next) {
   let sql = "UPDATE user SET u_mobile=?,u_altermobile=?,u_password =? ,u_cpassword=?,u_name=?  WHERE u_id =?"
   connection.query(sql, [req.body.u_mobile, req.body.u_altermobile, req.body.u_password, req.body.u_cpassword, req.body.u_name, req.body.u_id], function (err, result, fields) {
@@ -135,7 +136,17 @@ router.post('/updateUserById', cors(), function (req, res, next) {
   });
 });
 
-
+//Delete User By Id
+router.post('/deleteUserById', cors(), function (req, res, next) {
+  let sql = "DELETE FROM user  where u_id =?"
+  connection.query(sql, [req.body.u_id], function (err, result, fields) {
+    if (result === undefined || err) {
+      res.send({ statusCode: res.statusCode, status: "error" + err });
+    } else {
+      res.send({ statusCode: res.statusCode, status: "success"});
+    }
+  });
+});
 
 
 

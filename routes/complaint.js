@@ -42,16 +42,12 @@ router.get('/gelAllcomplaint', cors(), function (req, res, next) {
 
 // register new Complaint
 router.get('/getMachineType', cors(), function (req, res, next) {
-  
   connection.query('SELECT * FROM type_of_machine', function (err, result, fields) {
-    
     if (result.length === 0  || err) {
       res.send({ statusCode: res.statusCode, status: "error" });
     } else {
       res.send({ statusCode: res.statusCode, status: "success", data: result });
     }
-
-
   });
 });
 
@@ -88,7 +84,6 @@ router.post('/closedByComplaint', function (req, res, next) {
 
 //update status
 router.post('/updateComplaint', function (req, res, next) {
-  
   connection.query("UPDATE `complaint` SET `c_status` = ? ,`e_desc` = ? WHERE (`c_id` = ?)", [req.body.status, req.body.e_desc, req.body.complaintId], function (err, result, fields) {
     if (result.length === 0  || err) {
       console.log(err);
