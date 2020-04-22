@@ -27,10 +27,10 @@ try{
 //- Connection configuration
 //-
 var db_config = {
-  host         : 'us-cdbr-iron-east-02.cleardb.net',
-  user         : 'bf0655c159e23c',
-  password     : '192c0a8c',
-  database     : 'heroku_881a0b02b24c2eb'
+  host         : 'us-cdbr-iron-east-01.cleardb.net',
+  user         : 'b5c5e5a55cf50b',
+  password     : 'a7bca508',
+  database     : 'heroku_9d7dacc2e08e10c'
 };
 
 
