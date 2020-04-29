@@ -47,7 +47,7 @@ router.post('/getAll', cors(), function (req, res, next) {
 });
 
 //Get Status
-router.get('/getStudentData', cors(), function (req, res, next) {
+router.get('/userDat', cors(), function (req, res, next) {
   connection.query("SELECT * FROM admission_form", [req.body.email, req.body.password], function (err, result, fields) {
     if (result.length === 0 || err) {
       res.send({ statusCode: res.statusCode, status: "error" });
@@ -71,8 +71,8 @@ router.get('/getAnalysisData', cors(), function (req, res, next) {
 
 
 //Get All Customer
-router.get('/getAllCustomer', cors(), function (req, res, next) {
-  let sql = "select * from user ";
+router.get('/getStudentData', cors(), function (req, res, next) {
+  let sql = "select * from admission_form ";
   connection.query(sql, function (err, result, fields) {
     if (result.length === 0 || err) {
 
